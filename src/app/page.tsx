@@ -6,7 +6,8 @@ export default async function HomePage() {
   let verses;
   try {
     verses = await getVerses(VERSE_KEYS);
-  } catch {
+  } catch (err) {
+    console.error("[HomePage] Failed to load verses:", err);
     verses = null;
   }
 
@@ -20,7 +21,7 @@ export default async function HomePage() {
           Quran where Allah directly calls upon those who have faith.
         </p>
         <span className="verse-count-badge">
-          ☪ {VERSE_KEYS.length} Verses
+          {VERSE_KEYS.length} Verses
         </span>
       </header>
 

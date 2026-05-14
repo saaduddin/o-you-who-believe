@@ -165,6 +165,14 @@ a:hover {
   color: var(--accent-emerald-light);
 }
 
+.navbar-brand .arabic-title {
+  font-family: var(--font-arabic);
+  font-size: 1.4rem;
+  color: var(--text-arabic);
+  direction: rtl;
+  -webkit-text-fill-color: var(--text-arabic);
+}
+
 .navbar-brand-icon {
   width: 32px;
   height: 32px;
@@ -182,6 +190,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: auto;
 }
 
 .navbar-link {

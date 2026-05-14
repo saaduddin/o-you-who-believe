@@ -34,7 +34,9 @@ export async function getContentToken(): Promise<string> {
   });
 
   if (!response.ok) {
-    throw new Error(`Content token request failed: ${response.status}`);
+    const errorText = await response.text();
+    console.error(`[QF Token] Failed ${response.status}:`, errorText);
+    throw new Error(`Content token request failed: ${response.status} - ${errorText}`);
   }
 
   const data = await response.json();

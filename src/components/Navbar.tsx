@@ -24,10 +24,11 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-inner">
-        <Link href="/" className="navbar-brand">
-          <span className="navbar-brand-icon">☪</span>
-          <span>O You Who Believe</span>
-        </Link>
+        {pathname !== "/" && (
+          <Link href="/" className="navbar-brand">
+            <span className="arabic-title">يَـٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُوا۟</span>
+          </Link>
+        )}
         <div className="navbar-links">
           <Link
             href="/"
@@ -43,7 +44,6 @@ export default function Navbar() {
           </Link>
           {user ? (
             <a href="/api/auth/logout" className="auth-btn signed-in">
-              <span>☻</span>
               <span>{user.first_name || "Signed In"}</span>
             </a>
           ) : (

@@ -10,7 +10,7 @@ interface PageProps {
 
 export default async function VerseDetailPage({ params }: PageProps) {
   const { key } = await params;
-  const verseKey = key;
+  const verseKey = decodeURIComponent(key);
 
   // Validate verse key
   if (!VERSE_KEYS.includes(verseKey as typeof VERSE_KEYS[number])) {

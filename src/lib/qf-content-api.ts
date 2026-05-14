@@ -23,17 +23,17 @@ export interface ReflectionPost {
 
 /**
  * Fetch a single verse by key with Arabic text, translation, and audio.
- * Uses translation_id=131 (The Clear Quran by Dr. Mustafa Khattab)
+ * Uses translation_id=203 (Al-Hilali & Khan), fallback 85 (Abdel Haleem) for prelive
  * Uses audio recitation 7 (Mishary Rashid al-Afasy)
  */
-export async function getVerseByKey(verseKey: string): Promise<VerseData> {
+export async function getVerseByKey(verseKey: string): Promise<VerseData | null> {
   const { apiBaseUrl, clientId } = getQfOAuthConfig();
   const token = await getContentToken();
 
   const url = new URL(`${apiBaseUrl}/content/api/v4/verses/by_key/${verseKey}`);
   url.searchParams.set("language", "en");
   url.searchParams.set("words", "false");
-  url.searchParams.set("translations", "131");
+  url.searchParams.set("translations", "203,85");
   url.searchParams.set("fields", "text_uthmani");
   url.searchParams.set("audio", "7");
 
@@ -46,16 +46,27 @@ export async function getVerseByKey(verseKey: string): Promise<VerseData> {
   });
 
   if (!response.ok) {
+    if (response.status === 404) {
+      console.warn(`[QF Verse] Verse ${verseKey} not found in API. Skipping.`);
+      return null;
+    }
+    const errorText = await response.text();
+    console.error(`[QF Verse] Failed ${verseKey} ${response.status}:`, errorText);
     throw new Error(`Failed to fetch verse ${verseKey}: ${response.status}`);
   }
 
   const data = await response.json();
   const verse = data.verse;
 
+  // Prefer Hilali & Khan (203), fallback to Abdel Haleem (85) or the first available
+  const preferredTranslation =
+    verse.translations?.find((t: any) => t.resource_id === 203) ||
+    verse.translations?.[0];
+
   return {
     verse_key: verse.verse_key,
     text_uthmani: verse.text_uthmani || "",
-    translation: verse.translations?.[0]?.text || "",
+    translation: preferredTranslation?.text || "",
     audio_url: verse.audio?.url ? `https://audio.qurancdn.com/${verse.audio.url}` : null,
   };
 }
@@ -70,7 +81,7 @@ export async function getVerses(verseKeys: readonly string[]): Promise<VerseData
   for (let i = 0; i < verseKeys.length; i += BATCH_SIZE) {
     const batch = verseKeys.slice(i, i + BATCH_SIZE);
     const batchResults = await Promise.all(batch.map(getVerseByKey));
-    results.push(...batchResults);
+    results.push(...batchResults.filter((v): v is VerseData => v !== null));
   }
 
   return results;
