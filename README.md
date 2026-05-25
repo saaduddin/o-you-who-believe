@@ -1,7 +1,17 @@
 # O You Who Believe
 
-A Next.js application that displays and allows interaction with the specific verses from the Quran starting with "O you who believe" (Ya Ayyuhallazina Amanu).
-Powered by the [Quran Foundation API](https://api-docs.quran.foundation).
+An interactive Next.js application designed to help users easily discover, listen to, and reflect upon all the verses in the Quran addressing the believers directly with the phrase "O you who believe".
+
+## About the Project
+
+**What problem does this solve?**
+While reading the Quran, specific divine instructions directed at believers ("Ya Ayyuhallazina Amanu") are scattered throughout various chapters. This project solves the problem of finding and focusing on these specific, actionable commands by aggregating them into one easy-to-navigate platform.
+
+**How does this help people engage with the Quran?**
+It fosters focused engagement by presenting both the original Arabic text and translations with dedicated audio playback and community reflections. Users can bookmark these specific commandments for later review, encouraging continuous learning and direct application of these verses in their daily lives.
+
+**Primary Audience**
+The primary audience includes Muslims seeking to study the specific commandments given to believers, students of knowledge aiming to categorize Quranic instructions, and general readers looking for a focused, thematic approach to interacting with the Quran.
 
 ## Features
 
